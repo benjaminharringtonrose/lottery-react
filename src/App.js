@@ -1,30 +1,26 @@
 import logo from "./logo.svg";
 import "./App.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import web3 from "./web3";
 import lottery from "./lottery";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      manager: "",
-    };
-  }
+const App = () => {
+  const [manager, setManager] = useState("");
 
-  async componentDidMount() {
-    const manager = await lottery.methods.manager().call();
-    console.log("manager: ", manager);
-    this.setState({ manager });
-  }
+  useEffect(() => {
+    async function asyncCalls() {
+      const manager = await lottery.methods.manager().call();
+      setManager(manager);
+      console.log(manager);
+    }
+    asyncCalls();
+  }, []);
 
-  render() {
-    return (
-      <div>
-        <h2>{"Lottery Contract"}</h2>
-        <p>{`This contract is managed by ${this.state.manager}`}</p>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h2>{"Lottery Contract"}</h2>
+      <p>{`This contract is managed by ${manager}`}</p>
+    </div>
+  );
+};
 export default App;
