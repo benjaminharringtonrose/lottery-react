@@ -16,17 +16,17 @@ const App = () => {
 
   const init = async () => {
     const manager = await lottery.methods.manager().call();
-    await updateBalance();
-    await updatePlayers();
+    await getBalance();
+    await getPlayers();
     setManager(manager);
   };
 
-  const updateBalance = async () => {
+  const getBalance = async () => {
     const balance = await web3.eth.getBalance(lottery.options.address);
     setBalance(balance);
   };
 
-  const updatePlayers = async () => {
+  const getPlayers = async () => {
     const players = await lottery.methods.getPlayers().call();
     setPlayers(players);
   };
@@ -39,8 +39,8 @@ const App = () => {
       from: accounts[0],
       value: web3.utils.toWei(ether, "ether"),
     });
-    await updatePlayers();
-    await updateBalance();
+    await getPlayers();
+    await getBalance();
     setMessage("You have been entered!");
   };
 
@@ -50,8 +50,8 @@ const App = () => {
     await lottery.methods.pickWinner().send({
       from: accounts[0],
     });
-    await updatePlayers();
-    await updateBalance();
+    await getPlayers();
+    await getBalance();
     setMessage("A winner has been picked!");
   };
 
